@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement App</title>
+    <!-- Add Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css">
+    <style>
+        /* body {
+            background-color: #f8f9fa;
+        } */
+
+        #main-6 {
+            margin-top: 20px;
+        }
+
+        .card {
+            border: 1px solid #d1d1d1;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-header {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .announcements-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .list-group-item {
+            margin-bottom: 10px;
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .list-group-item:hover {
+            transform: scale(1.05);
+        }
+
+        .edit-btn,
+        .delete-btn {
+            cursor: pointer;
+            margin-left: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .list-group-item:hover .edit-btn,
+        .list-group-item:hover .delete-btn {
+            opacity: 1;
+        }
+
+        .delete-btn {
+            color: #dc3545;
+        }
+
+        .col-md-6{
+            margin-top: 47px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid rgb(145, 142, 142);
+            border-radius: 10px;
+        }
+        /* Adjustments for smaller screens */
+        @media (max-width: 768px) {
+            .card-body {
+                max-height: calc(100vh - 200px);
+                overflow-y: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main-6" class="container">
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h1 class="text-center mb-0">Create Announcement</h1>
+                        </div>
+                        <div class="card-body">
+                            <form id="announcementForm">
+                                <div class="form-group">
+                                    <label for="title">Title</label>
+                                    <input type="text" class="form-control" id="title" placeholder="Enter Title" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="content">Content</label>
+                                    <textarea class="form-control" id="content" rows="5" placeholder="Enter Content" required></textarea>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-block" onclick="submitForm()">Create</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mt-5">
+                    <h2>Announcements</h2>
+                    <ul id="announcementsList" class="list-group announcements-list">
+                        <!-- Announcements will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Bootstrap JS and Popper.js scripts here -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function submitForm() {
+            // Get form values
+            var title = document.getElementById("title").value;
+            var content = document.getElementById("content").value;
+
+            // Create new announcement item
+            var listItem = document.createElement("li");
+            listItem.className = "list-group-item";
+            listItem.innerHTML = `
+                <strong>${title}</strong>: ${content}
+                <span class="edit-btn" onclick="editAnnouncement(this)">Edit</span>
+                <span class="delete-btn" onclick="deleteAnnouncement(this)">Delete</span>`;
+            
+            // Append to the announcements list
+            document.getElementById("announcementsList").appendChild(listItem);
+
+            // Reset form
+            document.getElementById("announcementForm").reset();
+        }
+
+        function editAnnouncement(element) {
+            // Retrieve existing values from the list item
+            var announcementText = element.parentElement.innerText.trim().split(":");
+            var title = announcementText[0];
+            var content = announcementText[1];
+
+            // Populate form with existing values
+            document.getElementById("title").value = title;
+            document.getElementById("content").value = content;
+
+            // Remove the edited announcement from the list
+            element.parentElement.remove();
+        }
+
+        function deleteAnnouncement(element) {
+            // Remove the announcement from the list
+            element.parentElement.remove();
+        }
+    </script>
+</body>
+</html>
